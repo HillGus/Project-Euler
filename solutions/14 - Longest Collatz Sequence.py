@@ -1,5 +1,6 @@
 from time import process_time as pt
 from commons import runtime
+from math import log
 
 generated_chains = {}
 def naive_fn(n):
@@ -26,25 +27,42 @@ def naive_resolve():
             longest_owner = x
     print(longest_owner)
 
+generated_lengths = {}
 def new_fn(n):
-    if generated_chains.get(n) != None:
-        return generated_chains.get(n)
+    if n in generated_lengths:
+        return generated_lengths[n]
     length = 1
     if n % 2 == 0:
-        n /= 2
+        n //= 2
     else:
         n = 3 * n + 1
     if n > 1:
         new_gen = new_fn(n)
         length += new_gen
-        generated_chains[n] = new_gen
-    return length + 1
+        generated_lengths[n] = new_gen
+    return length
 
 def new_resolve():
     longest_chain = 0
     longest_owner = 0
-    for x in range(999999, 1, -2):
+    for x in range(500001, 999999, 2):
         c = new_fn(x)
+        if c > longest_chain:
+            longest_chain = c
+            longest_owner = x
+    print(longest_owner)
+
+thread_generated_lengths = {1:1}
+def thread_fn(n):
+    if n not in thread_generated_lengths:
+        thread_generated_lengths[n] = thread_fn(n // 2) + 1  if n % 2 == 0 else thread_fn((3 * n + 1) // 2) + 2
+    return thread_generated_lengths[n]
+
+def thread_resolve():
+    longest_chain = 0
+    longest_owner = 0
+    for x in range(1, 1000000):
+        c = thread_fn(x)
         if c > longest_chain:
             longest_chain = c
             longest_owner = x

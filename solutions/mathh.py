@@ -1,3 +1,5 @@
+from math import sqrt
+
 def rfactorial(n, until = 1):
     if n == until:
         return 1
@@ -11,5 +13,13 @@ def factorial(n):
         r = r // (n // 2)
     return r
 
+def factors(n):
+    factors_list = []
+    for x in range(1, int(sqrt(n))):
+        if n % x == 0:
+            factors_list.append(x)
+            factors_list.append(n // x)
+    return factors
+                   
 def combination(n, c):
     return factorial(n) / (factorial(c) * factorial(n - c))

@@ -3,7 +3,7 @@ prime_list = [2, 3]
 def is_prime(x):
     if not ((x - 1) % 6 == 0 or (x + 1) % 6 == 0):
         return False
-    for p in prime_list:
+    for p, i in primes():
         if p > int(sqrt(x)) or p == x:
             break
         if x % p == 0:
